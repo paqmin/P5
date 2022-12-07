@@ -1,39 +1,25 @@
 // Récupération de l'identifiant du produit dans l'URL et ses infos
-    var str = window.location.href;
-    var url = new URL(str);
+    var url = new URL(window.location.href);
     var search_params = new URLSearchParams(url.search); 
-    if(search_params.has('_id')) {
-        var idCanap = search_params.get('_id');
-    }
+    const idCanap = search_params.get('_id');
+    console.log(idCanap);
+    
 
-//Récupération des données du produit correspondant à l'id dans le json
-    const urlCanap = `http://localhost:3000/api/products/${idCanap}`;
+//Récupération des données du produit correspondant à l'id dans le json + affichage des éléments du canapé
+  const urlCanap = `http://localhost:3000/api/products/${idCanap}`;
 
-//connection à l'api
-let affichageDonnees = function(){
-  fetch(urlCanap)
-    .then(function(res) {
-    //vérification de la connexion
-    if (res.ok) {
-      return res.json();
-    }
-  })
-  // affichage du produit
-    .then(function(idCanap) {
-        pageCanape(idCanap);
-        console.log(idCanap._id);
-        stockagePanier (idCanap);
-     })
-    .catch(function(err) {
-      // Une erreur est survenue
-      document.getElementsByClassName("titles").innerHTML = "<h1>Erreur 404</h1>"
-      console.log('erreur 404');
-    });
-}
+  async function affichageDonnees (){
+       await fetch(urlCanap)  //connection à l'api
+        .then((response) => response.json()) //test connexion json
+        .then(function(idCanap) {
+          affichagePageCanape(idCanap); // affichage données Canap
+              console.log(idCanap._id);
+     })   
+  }
 affichageDonnees();
 
-// construction la fiche canape
-function pageCanape (id){
+// construction la fiche du canape
+const affichagePageCanape  = (id) => {
   //image produit
   let img = document.querySelector(".item__img");
   img.innerHTML = `<img src="${id.imageUrl}" alt="${id.altTxt}"></img>`;
@@ -48,70 +34,129 @@ function pageCanape (id){
   description.innerHTML =`${id.description}`;
    // Couleurs
    let couleur = document.getElementById("colors");
-   console.log(id.colors)
-    for (let i of id.colors) {
-      couleur.innerHTML += `<option value="${i}">${i}</option>`;
-    }
+      for (let i of id.colors) {
+        couleur.innerHTML += `<option value="${i}">${i}</option>`;
+      }
 }
-//stockage données utilisateurs dans un tableau
+//ajout canape au panier
+let boutonAjoutPanier = document.getElementById("addToCart");
 
-function stockagePanier (id){
-  /////recuperation quantité
-  let quantite = document.getElementById("quantity").value; 
+boutonAjoutPanier.addEventListener('click', function(event){//fonction qui se lance au clic
+  ///recuperation quantité
+    const quantite = document.getElementById("quantity").value; 
   ////recuperation couleur   
-  let couleurChoisie = document.getElementById("colors").value; 
-   ////recuperation idproduit   
-  let idProduit = id._id;
-  ////écoute du bouton 
-  let bouton = document.getElementById("addToCart");
-  //// Creation tableau Panier
-  let Panier = [];
+    const couleurChoisie = document.getElementById("colors").value; 
+  ////recuperation idproduit   
+    const idProduit = idCanap;
+    let select = document.getElementById("selectElement");
+    let Panier = [];
 
-  console.log(bouton);
-  console.log(couleurChoisie);
-  console.log(quantite);
-  console.log(idProduit);
-  bouton.addEventListener('click', function (event) {         
-    
+    //si pas de couleur ou de quantite choisie
     if (couleurChoisie =="" || quantite <= 0 || quantite > 100){
-      alert("Sélectionnez tous les éléments");
-    }else{
+       //demander à l'utilisateur de faire une sélection
+       
+        select.innerHTML = `<p>>>> Veuillez choisir une couleur et une quantité <<<</p>`;
 
-      // recuperation du contenu du panier
-      let panierActuel = localStorage.getItem("Panier");
-      // si panier vide 
-      if(panierActuel ==null){
-          let Panier ={
-            id : "",
-            quantite : 0,
-            couleur : ""
-          };
-          console.table(Panier)
-        }else{ //si panier non vide
-          let Panier = JSON.parse(panierActuel);
-          console.table(Panier)
-        }
-
+    }else{ //si l'utilisateur a fait son choix
       console.log(couleurChoisie);
       console.log(quantite);
-      console.log(idProduit);
-     ////creation tableau produit panier
-      let Panier = {
-              id : idProduit,
+      // recuperation du contenu du panier
+      let panierActuel = localStorage.getItem("Panier");
+      console.log(panierActuel);
+
+          // si panier vide
+          if (panierActuel == null){
+            //ajout du produit sélectionné
+            let Panier ={
+              id : idCanap,
               quantite : quantite,
               couleur : couleurChoisie
-            }
+               };
+            
+            let panierActuel = [];
+            panierActuel.push(Panier);
+              console.table(Panier);
+              console.table(panierActuel);
+              let panierLocalStorage = JSON.stringify(panierActuel);
+              localStorage.setItem("panierActuel",panierLocalStorage);
+            
+
+          }else{ //si panier contient déjà un canap
+                //si canap présent même ID + même couleur
+                let Panier = JSON.parse(panierActuel);
+                console.log(Panier.quantite)
+
+          }
       
-      let objLinea = JSON.stringify(panierJson);
-      localStorage.setItem("obj",objLinea);
       
-      
-    
     }
+
+
 });
 
 
-}
+
+
+
+
+// function ajoutPanier () {
+//   /////recuperation quantité
+//   const quantite = document.getElementById("quantity").value; 
+//   ////recuperation couleur   
+//   const couleurChoisie = document.getElementById("colors").value; 
+//    ////recuperation idproduit   
+//   const idProduit = idCanap;
+
+  
+//   console.log(couleurChoisie);
+//   console.log(quantite);
+//   console.log(idProduit);
+
+
+//   // //si pas de couleur ou de quantite choisie
+//   // if (couleurChoisie =="" || quantite <= 0 || quantite > 100){
+//   //      //demander à l'utilisateur de faire une sélection
+//   //       let select = document.getElementById("selectElement");
+//   //       select.innerHTML = `<p>>>> Veuillez choisir une couleur et une quantité <<<</p>`;
+
+//   // }else{
+//  console.log(couleurChoisie);
+//       console.log(quantite);
+//       // recuperation du contenu du panier
+//       let panierActuel = localStorage.getItem("Panier");
+//       // si panier vide 
+//       if(panierActuel ==null){
+//           let Panier ={
+//             id : "",
+//             quantite : 0,
+//             couleur : ""
+//           };
+//           console.table(Panier)
+//         }else{ //si panier non vide
+//           let Panier = JSON.parse(panierActuel);
+//           console.table(Panier)
+//         }
+
+//       console.log(couleurChoisie);
+//       console.log(quantite);
+//       console.log(idProduit);
+//      ////creation tableau produit panier
+//       let Panier = {
+//               id : idProduit,
+//               quantite : quantite,
+//               couleur : couleurChoisie
+//             }
+      
+//       let panierLocalStorage = JSON.stringify(panierJson);
+//       localStorage.setItem("panierActuel",panierLocalStorage);
+      
+      
+    
+//     }
+// };
+
+
+
 
 
 
