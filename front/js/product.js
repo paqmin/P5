@@ -58,8 +58,6 @@ boutonAjoutPanier.addEventListener('click', function(event){//fonction qui se la
         select.innerHTML = `<p>>>> Veuillez choisir une couleur et une quantité <<<</p>`;
 
     }else{ //si l'utilisateur a fait son choix
-      console.log(couleurChoisie);
-      console.log(quantite);
       // recuperation du contenu du panier
       let panierActuel = localStorage.getItem("Panier");
       console.log(panierActuel);
@@ -75,16 +73,20 @@ boutonAjoutPanier.addEventListener('click', function(event){//fonction qui se la
             
             let panierActuel = [];
             panierActuel.push(Panier);
-              console.table(Panier);
-              console.table(panierActuel);
-              let panierLocalStorage = JSON.stringify(panierActuel);
-              localStorage.setItem("panierActuel",panierLocalStorage);
-            
+            let panierLocalStorage = JSON.stringify(panierActuel);
+            console.table(panierLocalStorage);
+            localStorage.setItem("Panier",panierLocalStorage); //panier stocké 
 
           }else{ //si panier contient déjà un canap
                 //si canap présent même ID + même couleur
-                let Panier = JSON.parse(panierActuel);
-                console.log(Panier.quantite)
+                const Panier = JSON.parse(panierActuel);
+                //on parcourt le panier
+                Panier.forEach ((canap) => {
+                  if (canap.id == idCanap && canap.couleur == couleurChoisie){
+                    console.log(canap.quantite)
+                  }
+                
+                })
 
           }
       
