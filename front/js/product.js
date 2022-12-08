@@ -49,8 +49,12 @@ boutonAjoutPanier.addEventListener('click', function(event){//fonction qui se la
   ////recuperation idproduit   
     const idProduit = idCanap;
     let select = document.getElementById("selectElement");
-    let Panier = [];
-
+    //let Panier = [];
+    let canapChoisi ={
+      id : idCanap,
+      quantite : quantite,
+      couleur : couleurChoisie
+       };
     //si pas de couleur ou de quantite choisie
     if (couleurChoisie =="" || quantite <= 0 || quantite > 100){
        //demander à l'utilisateur de faire une sélection
@@ -63,31 +67,42 @@ boutonAjoutPanier.addEventListener('click', function(event){//fonction qui se la
       console.log(panierActuel);
 
           // si panier vide
-          if (panierActuel == null){
+          if (panierActuel === null){
             //ajout du produit sélectionné
-            let Panier ={
-              id : idCanap,
-              quantite : quantite,
-              couleur : couleurChoisie
-               };
-            
             let panierActuel = [];
-            panierActuel.push(Panier);
+            panierActuel.push(canapChoisi);
             let panierLocalStorage = JSON.stringify(panierActuel);
             console.table(panierLocalStorage);
             localStorage.setItem("Panier",panierLocalStorage); //panier stocké 
-
+            select.innerHTML = `<p>>>> Vous avez commandé un  autre canapé<<<</p>`;
           }else{ //si panier contient déjà un canap
-                //si canap présent même ID + même couleur
                 const Panier = JSON.parse(panierActuel);
+                console.table(Panier);
                 //on parcourt le panier
-                Panier.forEach ((canap) => {
-                  if (canap.id == idCanap && canap.couleur == couleurChoisie){
-                    console.log(canap.quantite)
+                Panier.forEach ((canap) => { 
+                  if (canap.id === idCanap && canap.couleur === couleurChoisie){ //si canap présente même ID + même couleur
+                    var panierQuantite = canap.quantite;
+                    var nouvelleQuantite = parseInt(quantite) + parseInt(panierQuantite);//nouvelle quantité du même produit
+                    panierQuantite = nouvelleQuantite;
+                    console.log(panierQuantite);
+                    console.table(Panier);
+                    
+                    return idem = true;
+                    
+                  }else{
+                   return idem = false;
+                    
                   }
-                
                 })
-
+                console.log(idem);
+                if(idem === false){
+                  Panier.push(canapChoisi);
+                  let panierLocalStorage = JSON.stringify(Panier);
+                  console.table(panierLocalStorage);
+                  localStorage.setItem("Panier",panierLocalStorage); //panier stocké 
+                  select.innerHTML = `<p>>>> Vous avez commandé un  autre canapé<<<</p>`;
+                }
+                 
           }
       
       
