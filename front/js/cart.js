@@ -9,7 +9,11 @@ Panier.forEach(element => {
   const urlCanap = `http://localhost:3000/api/products/${element.id}`;
   fetch(urlCanap)
   .then(response => response.json())
-  .then(data => console.log(data));
+  .then((data) => {
+    infoCanap = data;
+    console.log(data);
+    console.log(infoCanap.price)
+  });
   
 });
 
