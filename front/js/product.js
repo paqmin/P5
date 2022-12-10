@@ -8,8 +8,8 @@
 //Récupération des données du produit correspondant à l'id dans le json + affichage des éléments du canapé
   const urlCanap = `http://localhost:3000/api/products/${idCanap}`;
 
-  async function affichageDonnees (){
-       await fetch(urlCanap)  //connection à l'api
+ function affichageDonnees (){
+      fetch(urlCanap)  //connection à l'api
         .then((response) => response.json()) //test connexion json
         .then(function(idCanap) {
           affichagePageCanape(idCanap); // affichage données Canap
@@ -58,18 +58,15 @@ boutonAjoutPanier.addEventListener('click', function(event){//fonction qui se la
     //si pas de couleur ou de quantite choisie
     if (couleurChoisie =="" || quantite <= 0 || quantite > 100){
        //demander à l'utilisateur de faire une sélection
-       
         select.innerHTML = `<p>>>> Veuillez choisir une couleur et une quantité <<<</p>`;
 
     }else{ //si l'utilisateur a fait son choix
       // recuperation du contenu du panier
       let panierActuel = localStorage.getItem("Panier");
-      console.log(panierActuel);
-
           // si panier vide
           if (panierActuel === null){
             //ajout du produit sélectionné
-            let panierActuel = [];
+            panierActuel = [];
             panierActuel.push(canapChoisi);
             let panierLocalStorage = JSON.stringify(panierActuel);
             console.table(panierLocalStorage);
@@ -78,100 +75,28 @@ boutonAjoutPanier.addEventListener('click', function(event){//fonction qui se la
           }else{ //si panier contient déjà un canap
                 const Panier = JSON.parse(panierActuel);
                 console.table(Panier);
+                idem = false;
                 //on parcourt le panier
                 Panier.forEach ((canap) => { 
                   if (canap.id === idCanap && canap.couleur === couleurChoisie){ //si canap présente même ID + même couleur
-                    var panierQuantite = canap.quantite;
-                    var nouvelleQuantite = parseInt(quantite) + parseInt(panierQuantite);//nouvelle quantité du même produit
-                    panierQuantite = nouvelleQuantite;
-                    console.log(panierQuantite);
-                    console.table(Panier);
-                    
-                    return idem = true;
-                    
-                  }else{
-                   return idem = false;
-                    
+                  canap.quantite= parseInt(quantite) + parseInt(canap.quantite);//nouvelle quantité du même produit
+                  idem = true;  
                   }
                 })
-                console.log(idem);
+               
                 if(idem === false){
                   Panier.push(canapChoisi);
-                  let panierLocalStorage = JSON.stringify(Panier);
-                  console.table(panierLocalStorage);
-                  localStorage.setItem("Panier",panierLocalStorage); //panier stocké 
                   select.innerHTML = `<p>>>> Vous avez commandé un  autre canapé<<<</p>`;
                 }
+
+            let panierLocalStorage = JSON.stringify(Panier);
+            localStorage.setItem("Panier",panierLocalStorage); //panier stocké 
                  
-          }
-      
-      
+          }  
     }
 
 
 });
-
-
-
-
-
-
-// function ajoutPanier () {
-//   /////recuperation quantité
-//   const quantite = document.getElementById("quantity").value; 
-//   ////recuperation couleur   
-//   const couleurChoisie = document.getElementById("colors").value; 
-//    ////recuperation idproduit   
-//   const idProduit = idCanap;
-
-  
-//   console.log(couleurChoisie);
-//   console.log(quantite);
-//   console.log(idProduit);
-
-
-//   // //si pas de couleur ou de quantite choisie
-//   // if (couleurChoisie =="" || quantite <= 0 || quantite > 100){
-//   //      //demander à l'utilisateur de faire une sélection
-//   //       let select = document.getElementById("selectElement");
-//   //       select.innerHTML = `<p>>>> Veuillez choisir une couleur et une quantité <<<</p>`;
-
-//   // }else{
-//  console.log(couleurChoisie);
-//       console.log(quantite);
-//       // recuperation du contenu du panier
-//       let panierActuel = localStorage.getItem("Panier");
-//       // si panier vide 
-//       if(panierActuel ==null){
-//           let Panier ={
-//             id : "",
-//             quantite : 0,
-//             couleur : ""
-//           };
-//           console.table(Panier)
-//         }else{ //si panier non vide
-//           let Panier = JSON.parse(panierActuel);
-//           console.table(Panier)
-//         }
-
-//       console.log(couleurChoisie);
-//       console.log(quantite);
-//       console.log(idProduit);
-//      ////creation tableau produit panier
-//       let Panier = {
-//               id : idProduit,
-//               quantite : quantite,
-//               couleur : couleurChoisie
-//             }
-      
-//       let panierLocalStorage = JSON.stringify(panierJson);
-//       localStorage.setItem("panierActuel",panierLocalStorage);
-      
-      
-    
-//     }
-// };
-
 
 
 
