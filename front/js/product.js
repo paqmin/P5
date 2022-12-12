@@ -86,7 +86,7 @@ boutonAjoutPanier.addEventListener('click', function(event){//fonction qui se la
                
                 if(idem === false){
                   Panier.push(canapChoisi);
-                  select.innerHTML = `<p>>>> Vous avez commandé un  autre canapé<<<</p>`;
+                  
                 }
 
             let panierLocalStorage = JSON.stringify(Panier);
