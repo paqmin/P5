@@ -12,11 +12,13 @@ let affichagePrixTotal= document.getElementById("totalPrice");
 var totalQuantite = new Array();
 var totalPrix = new Array();
 
-//si panier vide
+//PANIER VIDE
 if (Panier == null){
-  carteArticle.innerHTML = `<p>>>> Votre panier est vide <<<</p>`;
+  carteArticle.innerHTML = `<h2>>>> Votre panier est vide <<<</h2>`;
 } else {
-//recuperation de ts les éléments nécessaires à l'affichage
+////PANIER NON VIDE - AFFICHAGE ELEMENTS CANAPES SELECTIONNES -
+// si elements dans panier - recuperation de ts les éléments nécessaires à l'affichage
+function affichagePanier(){
 Panier.forEach((element) => {
   const urlCanap = `http://localhost:3000/api/products/${element.id}`;
   fetch(urlCanap)
@@ -45,21 +47,47 @@ Panier.forEach((element) => {
     </div>
   </article>`;
 
-  // TOTAUX
+  // TOTAUX + affichage quantité
   let quantite = parseInt(element.quantite);
-  let prix = parseInt(infoJson.price * element.quantite);
+  let prix = parseInt(infoJson.price * element.quantite); 
 
   totalQuantite.push(quantite);
   totalPrix.push(prix);
 
-  const reducer = (accumulator, curr) => accumulator + curr;
-  sumQuantite =totalQuantite.reduce(reducer);
-  sumPrix =totalPrix.reduce(reducer);
-  affichageTotalQuantite.innerHTML= sumQuantite;
+  const reducer = (accumulator, curr) => accumulator + curr; //somme tableau JS
+  sumQuantite =totalQuantite.reduce(reducer);//total des quantités
+  sumPrix =totalPrix.reduce(reducer);//prix total
+  affichageTotalQuantite.innerHTML= sumQuantite; 
   affichagePrixTotal.innerHTML= sumPrix;
   });
-  
+  modifQuantite();
 });
+}
+affichagePanier();
+
+// MODIFICATION DES QUANTITES
+
+function modifQuantite(){
+
+  let inputs = document.querySelectorAll('.itemQuantity');
+
+  console.log(inputs);
+  inputs.forEach((input) => {
+    
+    input.addEventListener("change", (e) => {
+      console.log(e);
+      console.log("test");
+      const id = e.target.closest('.cart__item').dataset.id;
+      const couleur = e.target.closest('.cart__item').dataset.color;
+      console.log(id,couleur);
+      const nvlleQte = e.target.valueAsNumber;
+      console.log(nvlleQte);
+          
+    })
+
+  });
+}
+
 
 
 }
