@@ -34,12 +34,12 @@ if (Panier == null) {
         sumPrix += infoJson.price * element.quantite ;
         sumQuantite += parseInt(element.quantite);
         console.log(sumQuantite , sumPrix);
+        //AFFICHAGE TOTAUX APRES FIN DES PROMISES (incrémentation à chaque passage)
         affichageTotalQuantite.innerHTML= sumQuantite; 
         affichagePrixTotal.innerHTML= sumPrix;
       });
-     
-  
   })
+  
 }
 
 function affichagePanier(article, infoJsonArticle) {
@@ -121,3 +121,24 @@ function affichagePanier(article, infoJsonArticle) {
   optionSupr.appendChild(pSupr);
 
 }
+function modifPanier(){
+  let inputs = document.querySelectorAll('.itemQuantity');
+
+  console.log(inputs);
+  inputs.forEach((input) => {
+    
+    input.onchange = (e) => {
+      console.log(e);
+      console.log("test");
+      const id = e.target.closest('.cart__item').dataset.id;
+      const couleur = e.target.closest('.cart__item').dataset.color;
+      console.log(id,couleur);
+      const nvlleQte = e.target.valueAsNumber;
+      console.log(nvlleQte);
+          
+    }
+
+  });
+
+}
+modifPanier();
