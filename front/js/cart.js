@@ -6,8 +6,8 @@ let Panier = JSON.parse(panierActuel);
 //recupération de la balise CSS pour l'affichage
 let carteArticle = document.getElementById("cart__items");
 let titre = document.querySelector("h1");
-let affichageTotalQuantite= document.getElementById("totalQuantity");
-let affichagePrixTotal= document.getElementById("totalPrice");
+let affichageTotalQuantite = document.getElementById("totalQuantity");
+let affichagePrixTotal = document.getElementById("totalPrice");
 
 
 // initialisation pour les Totaux
@@ -31,24 +31,20 @@ if (Panier == null) {
         console.log(infoJson.price, element.quantite);
         affichageElement(element, infoJson);
         //CALCUL QUANTITE & TOTAL
-        sumPrix += infoJson.price * element.quantite ;
+        sumPrix += infoJson.price * element.quantite;
         sumQuantite += parseInt(element.quantite);
-        console.log(sumQuantite , sumPrix);
+        console.log(sumQuantite, sumPrix);
         //AFFICHAGE TOTAUX APRES FIN DES PROMISES (incrémentation à chaque passage)
-        affichageTotalQuantite.innerHTML= sumQuantite; 
-        affichagePrixTotal.innerHTML= sumPrix;
+        affichageTotalQuantite.innerHTML = sumQuantite;
+        affichagePrixTotal.innerHTML = sumPrix;
       });
-      
-  }) 
-  
+
+  })
+
 }
 
-
-
-
-
 function affichageElement(article, infoJsonArticle) {
-
+  
   // insertion des articles
   let createArticle = document.createElement('article');
   createArticle.className = 'cart__item';
@@ -125,34 +121,34 @@ function affichageElement(article, infoJsonArticle) {
   optionSupr.appendChild(pSupr);
 
   modifQte(inputQuantite, article);
-  supprCanap(pSupr,article);
+  supprCanap(pSupr, article);
 }
 
-function modifQte(input, article){
-    input.onchange = (e) => {
-      let nvlleQte = e.target.value;
-      console.log(nvlleQte, article);
-      article.quantite=nvlleQte;
-      e.target.previousElementSibling.textContent = 'Qté : ' + article.quantite;
-      console.log(Panier);
-      let panierLocalStorage = JSON.stringify(Panier);
-      localStorage.setItem("Panier",panierLocalStorage); //panier stocké 
-      alert('La quantité de votre article a bien été modifée.');
-      window.location.reload();
-    }
+function modifQte(input, article) {
+  input.onchange = (e) => {
+    let nvlleQte = e.target.value;
+    console.log(nvlleQte, article);
+    article.quantite = nvlleQte;
+    e.target.previousElementSibling.textContent = 'Qté : ' + article.quantite;
+    console.log(Panier);
+    let panierLocalStorage = JSON.stringify(Panier);
+    localStorage.setItem("Panier", panierLocalStorage); //panier stocké 
+    alert('La quantité de votre article a bien été modifée.');
+    window.location.reload();
+  }
 }
 
-function supprCanap(button, article){
+function supprCanap(button, article) {
 
   button.onclick = (e) => {
-  //filtre les éléments qui n'ont pas l'identifiant de l'article sélectionné
+    //filtre les éléments qui n'ont pas l'identifiant de l'article sélectionné
     Panier = Panier.filter(element => element.id != article.id)
     //stockage du Panier à nouveau
     let panierLocalStorage = JSON.stringify(Panier);
-    localStorage.setItem("Panier",panierLocalStorage); //panier stocké 
+    localStorage.setItem("Panier", panierLocalStorage); //panier stocké 
     alert('Votre article a bien été supprimé.');
     window.location.reload();
-    
+
   }
 }
 
