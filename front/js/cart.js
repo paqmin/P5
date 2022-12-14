@@ -125,9 +125,9 @@ function affichageElement(article, infoJsonArticle) {
   optionSupr.appendChild(pSupr);
 
   modifQte(inputQuantite, article);
-  
-
+  supprCanap(pSupr,article);
 }
+
 function modifQte(input, article){
     input.onchange = (e) => {
       let nvlleQte = e.target.value;
@@ -137,10 +137,22 @@ function modifQte(input, article){
       console.log(Panier);
       let panierLocalStorage = JSON.stringify(Panier);
       localStorage.setItem("Panier",panierLocalStorage); //panier stocké 
+      alert('La quantité de votre article a bien été modifée.');
       window.location.reload();
     }
+}
 
+function supprCanap(button, article){
+
+  button.onclick = (e) => {
+  //filtre les éléments qui n'ont pas l'identifiant de l'article sélectionné
+    Panier = Panier.filter(element => element.id != article.id)
+    //stockage du Panier à nouveau
+    let panierLocalStorage = JSON.stringify(Panier);
+    localStorage.setItem("Panier",panierLocalStorage); //panier stocké 
+    alert('Votre article a bien été supprimé.');
+    window.location.reload();
     
-
+  }
 }
 
