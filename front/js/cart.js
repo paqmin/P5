@@ -29,7 +29,7 @@ if (Panier == null) {
       .then((data) => {
         infoJson = data;
         console.log(infoJson.price, element.quantite);
-        affichagePanier(element, infoJson);
+        affichageElement(element, infoJson);
         //CALCUL QUANTITE & TOTAL
         sumPrix += infoJson.price * element.quantite ;
         sumQuantite += parseInt(element.quantite);
@@ -38,11 +38,16 @@ if (Panier == null) {
         affichageTotalQuantite.innerHTML= sumQuantite; 
         affichagePrixTotal.innerHTML= sumPrix;
       });
-  })
+      
+  }) 
   
 }
 
-function affichagePanier(article, infoJsonArticle) {
+
+
+
+
+function affichageElement(article, infoJsonArticle) {
 
   // insertion des articles
   let createArticle = document.createElement('article');
@@ -105,7 +110,7 @@ function affichagePanier(article, infoJsonArticle) {
   inputQuantite.setAttribute("min", "1");
   inputQuantite.setAttribute("max", "100");
   inputQuantite.setAttribute("value", article.quantite);
-
+  console.log(inputQuantite.value);
   // Insertion des elements dans les options de quantité.
   divQuantite.append(canapQte, inputQuantite);
 
@@ -120,13 +125,12 @@ function affichagePanier(article, infoJsonArticle) {
   pSupr.textContent = "Supprimer";
   optionSupr.appendChild(pSupr);
 
-}
-function modifPanier(){
-  let inputs = document.querySelectorAll('.itemQuantity');
+  modifPanier(inputQuantite)
 
-  console.log(inputs);
-  inputs.forEach((input) => {
-    
+}
+function modifPanier(input){
+  
+  console.log(input);
     input.onchange = (e) => {
       console.log(e);
       console.log("test");
@@ -138,7 +142,7 @@ function modifPanier(){
           
     }
 
-  });
+  
 
 }
-modifPanier();
+
