@@ -20,7 +20,7 @@ if (Panier == null) {
   titre.innerHTML = `Votre panier est vide`;
 
 } else {
-
+  console.log(Panier);
   ////PANIER NON VIDE - AFFICHAGE ELEMENTS CANAPES SELECTIONNES -
   Panier.forEach((element) => {
     const urlCanap = `http://localhost:3000/api/products/${element.id}`;
@@ -110,7 +110,6 @@ function affichageElement(article, infoJsonArticle) {
   inputQuantite.setAttribute("min", "1");
   inputQuantite.setAttribute("max", "100");
   inputQuantite.setAttribute("value", article.quantite);
-  console.log(inputQuantite.value);
   // Insertion des elements dans les options de quantité.
   divQuantite.append(canapQte, inputQuantite);
 
@@ -125,24 +124,23 @@ function affichageElement(article, infoJsonArticle) {
   pSupr.textContent = "Supprimer";
   optionSupr.appendChild(pSupr);
 
-  modifPanier(inputQuantite)
+  modifQte(inputQuantite, article);
+  
 
 }
-function modifPanier(input){
-  
-  console.log(input);
+function modifQte(input, article){
     input.onchange = (e) => {
-      console.log(e);
-      console.log("test");
-      const id = e.target.closest('.cart__item').dataset.id;
-      const couleur = e.target.closest('.cart__item').dataset.color;
-      console.log(id,couleur);
-      const nvlleQte = e.target.valueAsNumber;
-      console.log(nvlleQte);
-          
+      let nvlleQte = e.target.value;
+      console.log(nvlleQte, article);
+      article.quantite=nvlleQte;
+      e.target.previousElementSibling.textContent = 'Qté : ' + article.quantite;
+      console.log(Panier);
+      let panierLocalStorage = JSON.stringify(Panier);
+      localStorage.setItem("Panier",panierLocalStorage); //panier stocké 
+      window.location.reload();
     }
 
-  
+    
 
 }
 
