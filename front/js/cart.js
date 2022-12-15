@@ -19,21 +19,20 @@ if (Panier == null) {
 
   titre.innerHTML = `Votre panier est vide`;
 
-} else {
-  console.log(Panier);
-  ////PANIER NON VIDE - AFFICHAGE ELEMENTS CANAPES SELECTIONNES -
+} else {  ////PANIER NON VIDE - AFFICHAGE ELEMENTS CANAPES SELECTIONNES -
+
   Panier.forEach((element) => {
     const urlCanap = `http://localhost:3000/api/products/${element.id}`;
     fetch(urlCanap)
       .then(response => response.json())
       .then((data) => {
         infoJson = data;
-        console.log(infoJson.price, element.quantite);
         affichageElement(element, infoJson);
+
         //CALCUL QUANTITE & TOTAL
         sumPrix += infoJson.price * element.quantite;
         sumQuantite += parseInt(element.quantite);
-        console.log(sumQuantite, sumPrix);
+
         //AFFICHAGE TOTAUX APRES FIN DES PROMISES (incrémentation à chaque passage)
         affichageTotalQuantite.innerHTML = sumQuantite;
         affichagePrixTotal.innerHTML = sumPrix;
@@ -44,7 +43,7 @@ if (Panier == null) {
 }
 
 function affichageElement(article, infoJsonArticle) {
-  
+
   // insertion des articles
   let createArticle = document.createElement('article');
   createArticle.className = 'cart__item';
@@ -152,3 +151,42 @@ function supprCanap(button, article) {
   }
 }
 
+//PASSER LA COMMANDE - VALIDATION FORMULAIRE
+
+///REGEX
+let RegexAdress = new RegExp("^[A-zÀ-ú0-9 ,.'\-]+$");
+let RegexNom = new RegExp("^[A-zÀ-ú \-]+$");
+let RegexMail = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/i);
+
+///CHAMPS FORMULAIRE
+let email = document.getElementById("email");
+let emailErrorMsg = document.querySelector('#emailErrorMsg');
+let prenom = document.getElementById("firstName");
+let firstNameErrorMsg = document.getElementById("firstNameErrorMsg");
+let nom = document.getElementById("lastName");
+let lastnameErrorMsg = document.querySelector('#lastnameErrorMsg');
+let ville = document.getElementById("city");
+let cityErrorMsg = document.querySelector('#cityErrorMsg');
+let address = document.getElementById("address");
+let addressErrorMsg = document.querySelector('#addressErrorMsg');
+
+////Messages pour informer l'utilisateur de la validité des champs
+
+//PRENOM
+prenom.onchange= (e) => {
+  console.log(prenom)
+  if (RegexNom.test(prenom)){
+    firstNameErrorMsg.innerHTML = 'Valide';
+  } else {
+    firstNameErrorMsg.innerHTML = 'Champ invalide, veuillez vérifier votre prenom.';
+  }
+};
+
+//EMAIL
+email.onchange= (e) => {
+    if (RegexMail.test(email.value)){
+      emailErrorMsg.innerHTML = 'Valide';
+    } else {
+      emailErrorMsg.innerHTML = 'Champ invalide, veuillez vérifier votre adresse email.';
+    }
+};
