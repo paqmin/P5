@@ -132,7 +132,6 @@ function modifQte(input, article) {
     console.log(Panier);
     let panierLocalStorage = JSON.stringify(Panier);
     localStorage.setItem("Panier", panierLocalStorage); //panier stocké 
-    alert('La quantité de votre article a bien été modifée.');
     window.location.reload();
   }
 }
@@ -155,7 +154,7 @@ function supprCanap(button, article) {
 
 ///REGEX
 let RegexAdress = new RegExp("^[A-zÀ-ú0-9 ,.'\-]+$");
-let RegexNom = new RegExp("^[A-zÀ-ú \-]+$");
+let RegexNom = new RegExp (/^[a-z A-Z]{3,25}$/);
 let RegexMail = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/i);
 
 ///CHAMPS FORMULAIRE
@@ -169,24 +168,70 @@ let ville = document.getElementById("city");
 let cityErrorMsg = document.querySelector('#cityErrorMsg');
 let address = document.getElementById("address");
 let addressErrorMsg = document.querySelector('#addressErrorMsg');
+let commandErrorMsg = document.querySelector('#commandErrorMsg');
+let validPrenom = RegexNom.test(prenom.value);
+let validNom = RegexNom.test(nom.value);
+let validAdress = RegexAdress.test(address.value);
+let validVille = RegexNom.test(ville.value);
+let validEmail = RegexMail.test(email.value);
 
 ////Messages pour informer l'utilisateur de la validité des champs
-
+console.log(RegexNom.test(prenom.value));
 //PRENOM
 prenom.onchange= (e) => {
-  console.log(prenom)
-  if (RegexNom.test(prenom)){
-    firstNameErrorMsg.innerHTML = 'Valide';
+  if (validPrenom==true){
+    firstNameErrorMsg.innerHTML = 'Valide';  
   } else {
     firstNameErrorMsg.innerHTML = 'Champ invalide, veuillez vérifier votre prenom.';
+    
+  }
+};
+
+//NOM
+nom.onchange= (e) => {
+  if (validNom==true){
+    lastNameErrorMsg.innerHTML = 'Valide';
+  } else {
+    lastNameErrorMsg.innerHTML = 'Champ invalide, veuillez vérifier votre nom.';
+  }
+};
+
+//ADRESSE
+address.onchange= (e) => {
+  if (validAdress==true){
+    addressErrorMsg.innerHTML = 'Valide';
+  } else {
+    addressErrorMsg.innerHTML = 'Champ invalide, veuillez vérifier votre adresse.';
+  }
+};
+
+//VILLE
+ville.onchange= (e) => {
+  if (validVille ==true){
+    cityErrorMsg.innerHTML = 'Valide';
+  } else {
+    cityErrorMsg.innerHTML = 'Champ invalide, veuillez vérifier la ville entrée.';
   }
 };
 
 //EMAIL
 email.onchange= (e) => {
-    if (RegexMail.test(email.value)){
+    if (validEmail == true){
       emailErrorMsg.innerHTML = 'Valide';
     } else {
       emailErrorMsg.innerHTML = 'Champ invalide, veuillez vérifier votre adresse email.';
     }
 };
+
+//ENVOI COMMANDE
+let buttonCommande = document.querySelector('#order');
+console.log(validPrenom)
+buttonCommande.onclick= (e) =>{
+  e.preventDefault();
+  if (validPrenom == true || validNom == true || validVille == true || validAdress == true || validEmail == true){
+    console.log(validPrenom)
+  } else{
+    commandErrorMsg.innerHTML = 'Veuillez vérifier vos données';
+  }
+
+}
