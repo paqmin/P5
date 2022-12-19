@@ -243,7 +243,7 @@ buttonCommande.onclick= (e) =>{
     //Creation d'un objet avec les produits et les informations de contact
     let commande ={
       contact : {
-        firstname : prenom.value,
+        firstName : prenom.value,
         lastName : nom.value,
         address : address.value,
         city : ville.value,
@@ -267,7 +267,7 @@ buttonCommande.onclick= (e) =>{
         .then(result => {
           console.log(result);
        
-        //document.location.href = `confirmation.html?orderId=${result.orderId}`;
+        document.location.href = `confirmation.html?orderId=${result.orderId}`;
        
       })
       .catch(function (err) {
