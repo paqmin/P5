@@ -241,27 +241,38 @@ buttonCommande.onclick= (e) =>{
     });
     console.table(productID);
     //Creation d'un objet avec les produits et les informations de contact
-    const commande ={
-      contact,
+    let commande ={
+      contact : {
+        firstname : prenom.value,
+        lastName : nom.value,
+        address : address.value,
+        city : ville.value,
+        email : email.value
+      },
       products : productID,
     }
     console.log(commande);
     // Stockage de la commande en localstorage et envoi à l'API
     
   
-    fetch("http://localhost:3000/api/products/order",{
-      method: 'POST',
-      headers: { 
-          'Accept': 'application/json', 
-          'Content-Type': 'application/json' 
-          },
+    fetch("http://localhost:3000/api/products/order", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify(commande),
-      })
+    })
         .then(response => response.json())
         .then(result => {
           console.log(result);
-        localStorage.setItem('orderId',  result.orderId);
-        //document.location.href = 'confirmation.html?id='+ data.orderId;
+       
+        //document.location.href = `confirmation.html?orderId=${result.orderId}`;
+       
+      })
+      .catch(function (err) {
+        console.log(err);
+        alert("erreur");
       });
 
 
