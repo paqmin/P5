@@ -154,7 +154,7 @@ function supprCanap(button, article) {
 
 ///REGEX
 let RegexAdress = new RegExp("^[A-zÀ-ú0-9 ,.'\-]+$");
-let RegexNom = new RegExp (/^[a-z A-Z]{3,25}$/);
+let RegexNom = new RegExp ("^[a-zA-Z ,.'-]+$");
 let RegexMail = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/i);
 
 ///CHAMPS FORMULAIRE
@@ -169,18 +169,14 @@ let cityErrorMsg = document.querySelector('#cityErrorMsg');
 let address = document.getElementById("address");
 let addressErrorMsg = document.querySelector('#addressErrorMsg');
 let commandErrorMsg = document.querySelector('#commandErrorMsg');
-let validPrenom = RegexNom.test(prenom.value);
-let validNom = RegexNom.test(nom.value);
-let validAdress = RegexAdress.test(address.value);
-let validVille = RegexNom.test(ville.value);
-let validEmail = RegexMail.test(email.value);
+
 
 ////Messages pour informer l'utilisateur de la validité des champs
-console.log(RegexNom.test(prenom.value));
 //PRENOM
 prenom.onchange= (e) => {
-  if (validPrenom==true){
-    firstNameErrorMsg.innerHTML = 'Valide';  
+  if (RegexNom.test(prenom.value)){
+    firstNameErrorMsg.innerHTML = 'Valide'; 
+    let validPrenom = RegexNom.test(prenom.value); 
   } else {
     firstNameErrorMsg.innerHTML = 'Champ invalide, veuillez vérifier votre prenom.';
     
@@ -189,7 +185,7 @@ prenom.onchange= (e) => {
 
 //NOM
 nom.onchange= (e) => {
-  if (validNom==true){
+  if (RegexNom.test(nom.value)){
     lastNameErrorMsg.innerHTML = 'Valide';
   } else {
     lastNameErrorMsg.innerHTML = 'Champ invalide, veuillez vérifier votre nom.';
@@ -198,7 +194,7 @@ nom.onchange= (e) => {
 
 //ADRESSE
 address.onchange= (e) => {
-  if (validAdress==true){
+  if (RegexAdress.test(address.value)){
     addressErrorMsg.innerHTML = 'Valide';
   } else {
     addressErrorMsg.innerHTML = 'Champ invalide, veuillez vérifier votre adresse.';
@@ -207,7 +203,7 @@ address.onchange= (e) => {
 
 //VILLE
 ville.onchange= (e) => {
-  if (validVille ==true){
+  if (RegexNom.test(ville.value)){
     cityErrorMsg.innerHTML = 'Valide';
   } else {
     cityErrorMsg.innerHTML = 'Champ invalide, veuillez vérifier la ville entrée.';
@@ -216,7 +212,7 @@ ville.onchange= (e) => {
 
 //EMAIL
 email.onchange= (e) => {
-    if (validEmail == true){
+    if (RegexMail.test(email.value)){
       emailErrorMsg.innerHTML = 'Valide';
     } else {
       emailErrorMsg.innerHTML = 'Champ invalide, veuillez vérifier votre adresse email.';
@@ -225,11 +221,50 @@ email.onchange= (e) => {
 
 //ENVOI COMMANDE
 let buttonCommande = document.querySelector('#order');
-console.log(validPrenom)
+
 buttonCommande.onclick= (e) =>{
   e.preventDefault();
-  if (validPrenom == true || validNom == true || validVille == true || validAdress == true || validEmail == true){
-    console.log(validPrenom)
+  if (RegexNom.test(prenom.value) == true && RegexNom.test(nom.value) == true && RegexNom.test(ville.value) == true && RegexAdress.test(address.value) == true && RegexMail.test(email.value) == true){
+    //Creation d'un objet avec les données de contact du client
+    let contact = {
+      firstname : prenom.value,
+      lastName : nom.value,
+      address : address.value,
+      city : ville.value,
+      email : email.value
+    };
+    console.log(contact);
+    //Creation d'un tableau de produits envoyé au back-end- array de strings product-ID
+    let productID = [];
+    Panier.forEach ((product)=> {
+      productID.push(product.id);
+    });
+    console.table(productID);
+    //Creation d'un objet avec les produits et les informations de contact
+    const commande ={
+      contact,
+      products : productID,
+    }
+    console.log(commande);
+    // Stockage de la commande en localstorage et envoi à l'API
+    
+  
+    fetch("http://localhost:3000/api/products/order",{
+      method: 'POST',
+      headers: { 
+          'Accept': 'application/json', 
+          'Content-Type': 'application/json' 
+          },
+      body: JSON.stringify(commande),
+      })
+        .then(response => response.json())
+        .then(result => {
+          console.log(result);
+        localStorage.setItem('orderId',  result.orderId);
+        //document.location.href = 'confirmation.html?id='+ data.orderId;
+      });
+
+
   } else{
     commandErrorMsg.innerHTML = 'Veuillez vérifier vos données';
   }
