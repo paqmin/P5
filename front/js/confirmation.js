@@ -1,8 +1,9 @@
 //Récupération du numéro de commande dans l'URL
-var str = window.location.href;
-var url = new URL(str);
-var idOrderURL = url.searchParams.get("orderId");
+let str = window.location.href;
+let url = new URL(str);
+let idOrderURL = url.searchParams.get("orderId");
 
 //Affichage du numéro de commande
-var orderIdNumberElt = document.querySelector('#orderId');
-orderIdNumberElt.innerHTML = idOrderURL;
+let orderIdCommande = document.querySelector('#orderId');
+orderIdCommande.innerHTML = idOrderURL;
+localStorage.clear();

@@ -16,8 +16,7 @@ let recupJson = function () {
     })
     .catch(function (err) {
       // Une erreur est survenue
-      document.getElementsByClassName("titles").innerHTML = "<h1>Erreur 404</h1>"
-      console.log('erreur 404');
+      alert('erreur 404');
     });
 }
 recupJson();

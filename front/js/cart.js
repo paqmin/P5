@@ -178,8 +178,7 @@ prenom.onchange= (e) => {
     firstNameErrorMsg.innerHTML = 'Valide'; 
     let validPrenom = RegexNom.test(prenom.value); 
   } else {
-    firstNameErrorMsg.innerHTML = 'Champ invalide, veuillez vérifier votre prenom.';
-    
+    firstNameErrorMsg.innerHTML = 'Champ invalide, veuillez vérifier votre prenom.'; 
   }
 };
 
@@ -224,14 +223,14 @@ let buttonCommande = document.querySelector('#order');
 
 buttonCommande.onclick= (e) =>{
   e.preventDefault();
-  if (RegexNom.test(prenom.value) == true && RegexNom.test(nom.value) == true && RegexNom.test(ville.value) == true && RegexAdress.test(address.value) == true && RegexMail.test(email.value) == true){
+  if (RegexNom.test(prenom.value) && RegexNom.test(nom.value) && RegexNom.test(ville.value) && RegexAdress.test(address.value) && RegexMail.test(email.value)){
   
     //Creation d'un tableau de produits envoyé au back-end- array de strings product-ID
     let productID = [];
     Panier.forEach ((product)=> {
       productID.push(product.id);
     });
-    console.table(productID);
+   
     //Creation d'un objet avec les produits et les informations de contact
     let commande ={
       contact : {
@@ -243,10 +242,8 @@ buttonCommande.onclick= (e) =>{
       },
       products : productID,
     }
-    console.log(commande);
-    // Stockage de la commande en localstorage et envoi à l'API
-    
   
+    // Stockage de la commande en localstorage et envoi à l'API
     fetch("http://localhost:3000/api/products/order", {
       method: "POST",
       headers: {
@@ -257,13 +254,9 @@ buttonCommande.onclick= (e) =>{
     })
         .then(response => response.json())
         .then(result => {
-          console.log(result);
-       
-        document.location.href = `confirmation.html?orderId=${result.orderId}`;
-       
+        document.location.href = `confirmation.html?orderId=${result.orderId}`; 
       })
       .catch(function (err) {
-        console.log(err);
         alert("erreur");
       });
 
