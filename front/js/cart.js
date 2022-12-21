@@ -225,15 +225,7 @@ let buttonCommande = document.querySelector('#order');
 buttonCommande.onclick= (e) =>{
   e.preventDefault();
   if (RegexNom.test(prenom.value) == true && RegexNom.test(nom.value) == true && RegexNom.test(ville.value) == true && RegexAdress.test(address.value) == true && RegexMail.test(email.value) == true){
-    //Creation d'un objet avec les données de contact du client
-    let contact = {
-      firstname : prenom.value,
-      lastName : nom.value,
-      address : address.value,
-      city : ville.value,
-      email : email.value
-    };
-    console.log(contact);
+  
     //Creation d'un tableau de produits envoyé au back-end- array de strings product-ID
     let productID = [];
     Panier.forEach ((product)=> {
