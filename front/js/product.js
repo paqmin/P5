@@ -12,6 +12,9 @@ function affichageDonnees() {
     .then(function (idCanap) {
       affichagePageCanape(idCanap); // affichage données Canap
     })
+    .catch(function (err) {
+      alert("Veuillez sélectionner un produit");
+    });
 }
 affichageDonnees();
 

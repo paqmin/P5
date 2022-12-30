@@ -9,16 +9,13 @@ let titre = document.querySelector("h1");
 let affichageTotalQuantite = document.getElementById("totalQuantity");
 let affichagePrixTotal = document.getElementById("totalPrice");
 
-
 // initialisation pour les Totaux
 let sumQuantite = 0;
 let sumPrix = 0;
 
 //PANIER VIDE
 if (Panier == null) {
-
   titre.innerHTML = `Votre panier est vide`;
-
 } else {  ////PANIER NON VIDE - AFFICHAGE ELEMENTS CANAPES SELECTIONNES -
 
   Panier.forEach((element) => {
@@ -37,13 +34,10 @@ if (Panier == null) {
         affichageTotalQuantite.innerHTML = sumQuantite;
         affichagePrixTotal.innerHTML = sumPrix;
       });
-
   })
-
 }
 
 function affichageElement(article, infoJsonArticle) {
-
   // insertion des articles
   let createArticle = document.createElement('article');
   createArticle.className = 'cart__item';
@@ -89,6 +83,7 @@ function affichageElement(article, infoJsonArticle) {
   let divOptions = document.createElement("div");
   divOptions.classList.add("cart__item__content__settings");
   createItemContent.appendChild(divOptions);
+  
   // Insertions options quantité.
   let divQuantite = document.createElement("div");
   divQuantite.classList.add("cart__item__content__settings__quantity");
@@ -105,6 +100,7 @@ function affichageElement(article, infoJsonArticle) {
   inputQuantite.setAttribute("min", "1");
   inputQuantite.setAttribute("max", "100");
   inputQuantite.setAttribute("value", article.quantite);
+  
   // Insertion des elements dans les options de quantité.
   divQuantite.append(canapQte, inputQuantite);
 
