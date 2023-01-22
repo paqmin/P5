@@ -36,7 +36,9 @@ if (Panier == null) {
       });
   })
 }
-
+//CONSTRUCTION DE LA PAGE DANS LE DOM - 
+// article = objet panier
+//infoJson = ts les détails du canape sélectionné
 function affichageElement(article, infoJsonArticle) {
   // insertion des articles
   let createArticle = document.createElement('article');
@@ -122,18 +124,16 @@ function affichageElement(article, infoJsonArticle) {
 function modifQte(input, article) {
   input.onchange = (e) => {
     let nvlleQte = e.target.value;
-    console.log(nvlleQte, article);
     article.quantite = nvlleQte;
     e.target.previousElementSibling.textContent = 'Qté : ' + article.quantite;
-    console.log(Panier);
+    //STOCKAGE DU PANIER
     let panierLocalStorage = JSON.stringify(Panier);
-    localStorage.setItem("Panier", panierLocalStorage); //panier stocké 
+    localStorage.setItem("Panier", panierLocalStorage);  
     window.location.reload();
   }
 }
 
 function supprCanap(button, article) {
-
   button.onclick = (e) => {
     //filtre les éléments qui n'ont pas l'identifiant de l'article sélectionné
     Panier = Panier.filter(element => element.id != article.id)
@@ -142,7 +142,6 @@ function supprCanap(button, article) {
     localStorage.setItem("Panier", panierLocalStorage); //panier stocké 
     alert('Votre article a bien été supprimé.');
     window.location.reload();
-
   }
 }
 
@@ -220,7 +219,6 @@ let buttonCommande = document.querySelector('#order');
 buttonCommande.onclick= (e) =>{
   e.preventDefault();
   if (RegexNom.test(prenom.value) && RegexNom.test(nom.value) && RegexNom.test(ville.value) && RegexAdress.test(address.value) && RegexMail.test(email.value)){
-  
     //Creation d'un tableau de produits envoyé au back-end- array de strings product-ID
     let productID = [];
     Panier.forEach ((product)=> {
@@ -239,7 +237,7 @@ buttonCommande.onclick= (e) =>{
       products : productID,
     }
   
-    // Stockage de la commande en localstorage et envoi à l'API
+    // Envoi de la commande à l'API - requête POST pour soummettre l'objet commande
     fetch("http://localhost:3000/api/products/order", {
       method: "POST",
       headers: {
