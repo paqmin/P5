@@ -14,7 +14,7 @@ let sumQuantite = 0;
 let sumPrix = 0;
 
 //PANIER VIDE
-if (Panier == null) {
+if (Panier == null || Panier.length===0) {
   titre.innerHTML = `Votre panier est vide`;
 } else {  ////PANIER NON VIDE - AFFICHAGE ELEMENTS CANAPES SELECTIONNES -
 
@@ -253,7 +253,6 @@ buttonCommande.onclick= (e) =>{
       .catch(function (err) {
         alert("erreur");
       });
-
 
   } else{
     commandErrorMsg.innerHTML = 'Veuillez vérifier vos données';
