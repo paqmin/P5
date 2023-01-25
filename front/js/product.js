@@ -58,7 +58,7 @@ boutonAjoutPanier.addEventListener('click', function (event) {//fonction qui se 
   //si pas de couleur ou de quantite choisie
   if (couleurChoisie == "" || quantite <= 0 || quantite > 100) {
     //demander à l'utilisateur de faire une sélection
-    select.innerHTML = `<p>>>> Veuillez choisir une couleur et une quantité <<<</p>`;
+    select.innerHTML = `<p style="color:red;">>>> Veuillez choisir une couleur et une quantité <<<</p>`;
 
   } else { //si l'utilisateur a fait son choix
     // recuperation du contenu du panier
@@ -68,9 +68,11 @@ boutonAjoutPanier.addEventListener('click', function (event) {//fonction qui se 
       //ajout du produit sélectionné
       panierActuel = [];
       panierActuel.push(canapChoisi);
+      alert("Votre choix a bien été ajouté au panier");
       //Stockage du canapé dans le localstorage
       let panierLocalStorage = JSON.stringify(panierActuel);
       localStorage.setItem("Panier", panierLocalStorage); //panier stocké 
+      document.location.href = `cart.html`; 
     } else { //si panier contient déjà un canap
       const Panier = JSON.parse(panierActuel);
       idem = false;
@@ -84,9 +86,11 @@ boutonAjoutPanier.addEventListener('click', function (event) {//fonction qui se 
       if (idem === false) {
         Panier.push(canapChoisi);
       }
+      alert("Votre choix a bien été ajouté au panier");
       //Stockage de Panier dans le localstorage
       let panierLocalStorage = JSON.stringify(Panier);
       localStorage.setItem("Panier", panierLocalStorage); //panier stocké 
+      document.location.href = `cart.html`; 
     }
   }
 

@@ -101,6 +101,7 @@ function affichageElement(article, infoJsonArticle) {
   inputQuantite.name = "itemQuantity";
   inputQuantite.setAttribute("min", "1");
   inputQuantite.setAttribute("max", "100");
+  inputQuantite.setAttribute("onkeypress","return event.charCode >= 48");
   inputQuantite.setAttribute("value", article.quantite);
   
   // Insertion des elements dans les options de quantité.
@@ -136,7 +137,7 @@ function modifQte(input, article) {
 function supprCanap(button, article) {
   button.onclick = (e) => {
     //filtre les éléments qui n'ont pas l'identifiant de l'article sélectionné
-    Panier = Panier.filter(element => element.id != article.id)
+    Panier = Panier.filter(element => element.id != article.id || element.couleur != article.couleur)
     //stockage du Panier à nouveau
     let panierLocalStorage = JSON.stringify(Panier);
     localStorage.setItem("Panier", panierLocalStorage); //panier stocké 
@@ -218,7 +219,7 @@ let buttonCommande = document.querySelector('#order');
 
 buttonCommande.onclick= (e) =>{
   e.preventDefault();
-  if (RegexNom.test(prenom.value) && RegexNom.test(nom.value) && RegexNom.test(ville.value) && RegexAdress.test(address.value) && RegexMail.test(email.value)){
+  if (RegexNom.test(prenom.value) && RegexNom.test(nom.value) && RegexNom.test(ville.value) && RegexAdress.test(address.value) && RegexMail.test(email.value) && Panier != null && Panier.length!==0){
     //Creation d'un tableau de produits envoyé au back-end- array de strings product-ID
     let productID = [];
     Panier.forEach ((product)=> {

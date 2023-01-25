@@ -2,11 +2,9 @@
 let str = window.location.href;
 let url = new URL(str);
 let idOrderURL = url.searchParams.get("orderId");
-console.log (idOrderURL);
-if(idOrderURL==null){
-    console.log ("testé");
-    let Commande = document.querySelector("confirmation");
-    console.log (Commande);
+
+if(idOrderURL==null){//si pas de commande 
+    let Commande = document.getElementById("confirmation");
     Commande.innerHTML = `<p> Pas de commande en cours</p>`;
 }else{
 //Affichage du numéro de commande
