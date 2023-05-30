@@ -1,8 +1,11 @@
-# Kanap #
+# P5 : Construisez un site e-commerce en JavaScript - Kanap #
 
-This is the front end and back end server for Project 5 of the Web Developer path.
+Les objectifs de ce projet étaient : 
+- Récupérer les données présentes dans une API en ligne au format JSON pour créer une interface interactive
+- Intégrer dynamiquement les éléments de l’API dans les différentes pages web avec JavaScript.
+- Mettre en place un plan de test d’acceptation. 
 
-### Back end Prerequisites ###
+### Installation ###
 
 You will need to have Node and `npm` installed locally on your machine.
 
