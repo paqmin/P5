@@ -1,7 +1,7 @@
 # P5 : Construisez un site e-commerce en JavaScript - Kanap #
 
 Les objectifs de ce projet étaient : 
-- Récupérer les données présentes dans une API en ligne au format JSON pour créer une interface interactive
+- Récupérer les données présentes dans une API en local au format JSON pour créer une interface interactive
 - Intégrer dynamiquement les éléments de l’API dans les différentes pages web avec JavaScript.
 - Mettre en place un plan de test d’acceptation. 
 
